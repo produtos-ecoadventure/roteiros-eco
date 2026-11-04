@@ -13,11 +13,10 @@ def main():
     b = base.carregar()
     roteiros = []
     for nome, r in b["roteiros"].items():
-        x = b["extras"][nome]
         roteiros.append({
             "n": nome, "f": r["familia"], "d": r["dias"], "nt": r["noites"],
             "t": [[p["destino"], p["noites"], p["obs"]] for p in r["trajeto"]],
-            "cat": x["categoria"].title(), "pdf": x["arquivo_id"],
+            "cat": r["categoria"].title(), "pdf": r["pdf"],
         })
     dados = {
         "regioes": [{"nome": k, "destinos": v} for k, v in b["regioes"].items()],

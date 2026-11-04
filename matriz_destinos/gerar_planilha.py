@@ -9,8 +9,6 @@ A matriz é calculada por fórmula (SUMIFS/COUNTIFS sobre a aba "Base"), então
 incluir ou corrigir linhas na Base atualiza a matriz e a aba de Busca.
 Fórmulas compatíveis com Excel e Google Sheets (sem FILTER/HSTACK).
 """
-import csv
-from collections import OrderedDict
 from pathlib import Path
 
 from openpyxl import Workbook
@@ -22,23 +20,18 @@ from openpyxl.worksheet.datavalidation import DataValidation
 AQUI = Path(__file__).parent
 SAIDA = AQUI.parent / "saida" / "MATRIZ_DESTINOS_POR_ROTEIRO_2026.xlsx"
 
-# Destinos (por região, em ordem geográfica) e famílias vêm da fonte única em dados/
-import base as _base
-_B = _base.carregar()
-DESTINOS = _B["regioes"]
-FAMILIAS = _B["ordem_familias"]
-COR_REGIAO = ["F4CCCC", "FCE5CD", "FFF2CC", "D9EAD3", "CFE2F3"]
+import base
+
+COR_REGIAO = ["F4CCCC", "FCE5CD", "FFF2CC", "D9EAD3", "CFE2F3", "EAD1DC", "D0E0E3"]
 
 PRETO, BRANCO = "000000", "FFFFFF"
 VERDE_ECO = "38761D"
 AZUL_CLARO = "EEF4FB"
 fino = Side(style="thin", color="BFBFBF")
 BORDA = Border(left=fino, right=fino, top=fino, bottom=fino)
-
-
-def ler_csv(nome):
-    with open(AQUI / "dados" / nome, encoding="utf-8") as f:
-        return list(csv.DictReader(f, delimiter=";"))
+L = get_column_letter
+COL_DEST0 = 6  # coluna F: primeiro destino na Matriz
+PRIM = 7       # primeira linha de roteiro na Matriz
 
 
 def nome_curto(destino):
@@ -46,19 +39,16 @@ def nome_curto(destino):
 
 
 def main():
-    base = ler_csv("roteiros_destinos.csv")
-    precos = {p["roteiro"]: p for p in ler_csv("roteiros_precos.csv")}
-
-    roteiros = OrderedDict()
-    for l in base:
-        r = roteiros.setdefault(l["roteiro"], {"familia": l["familia"], "dias": int(l["dias"]),
-                                               "noites": int(l["noites"]), "trajeto": []})
-        r["trajeto"].append(l)
-    ordem = sorted(roteiros, key=lambda k: (FAMILIAS.index(roteiros[k]["familia"]),
-                                            roteiros[k]["dias"], k))
+    b = base.carregar()
+    DESTINOS, FAMILIAS = b["regioes"], b["ordem_familias"]
+    roteiros = b["roteiros"]          # já em ordem de exibição
+    ordem = list(roteiros)
     todos_dest = [d for ds in DESTINOS.values() for d in ds]
-    faltando = {l["destino"] for l in base} - set(todos_dest)
-    assert not faltando, f"Destinos sem coluna: {faltando}"
+    n_paradas = sum(len(r["trajeto"]) for r in roteiros.values())
+    ULT = PRIM + len(ordem) - 1
+    col_traj = COL_DEST0 + len(todos_dest)
+    faixa_dest = f"Matriz!${L(COL_DEST0)}${PRIM}:${L(col_traj - 1)}${ULT}"
+    cab_dest = f"Matriz!${L(COL_DEST0)}$6:${L(col_traj - 1)}$6"
 
     wb = Workbook()
 
@@ -67,10 +57,10 @@ def main():
     wsb.title = "Base"
     cab_base = ["ROTEIRO", "FAMÍLIA", "DIAS", "NOITES", "ORDEM", "DESTINO", "NOITES NO DESTINO", "OBS"]
     wsb.append(cab_base)
-    for nome in ordem:
-        for l in roteiros[nome]["trajeto"]:
-            wsb.append([l["roteiro"], l["familia"], int(l["dias"]), int(l["noites"]),
-                        int(l["ordem"]), l["destino"], int(l["noites_destino"]), l["obs"] or None])
+    for nome, r in roteiros.items():
+        for p in r["trajeto"]:
+            wsb.append([nome, r["familia"], r["dias"], r["noites"],
+                        p["ordem"], p["destino"], p["noites"], p["obs"] or None])
     for c in wsb[1]:
         c.font = Font(bold=True, color=BRANCO)
         c.fill = PatternFill("solid", fgColor=PRETO)
@@ -95,7 +85,7 @@ def main():
         for d in ds:
             i = wsd.max_row + 1
             wsd.append([d, reg, None, None])
-            col_m = f'INDEX(Matriz!$F$7:$AB${6 + len(ordem)},0,MATCH(A{i},Matriz!$F$6:$AB$6,0))'
+            col_m = f'INDEX({faixa_dest},0,MATCH(A{i},{cab_dest},0))'
             wsd[f"C{i}"] = f'=COUNT({col_m})+COUNTIF({col_m},"●")'
             wsd[f"D{i}"] = f"=SUMIFS({rngG},{rngF},A{i})"
     for c in wsd[1]:
@@ -108,14 +98,9 @@ def main():
 
     # ---------------------------------------------------------------- Matriz
     ws = wb.create_sheet("Matriz", 0)
-    PRIM = 7
-    ULT = PRIM + len(ordem) - 1
-    col_dest0 = 6  # F
-    col_traj = col_dest0 + len(todos_dest)
+    col_dest0 = COL_DEST0
     col_pdf = col_traj + 1
     col_aux = col_pdf + 1
-    L = get_column_letter
-
     ws["A1"] = "MATRIZ DE DESTINOS POR ROTEIRO – 2026"
     ws["A1"].font = Font(bold=True, size=16, color=VERDE_ECO)
     ws["A2"] = ("Número = noites no destino   •   ● = visita sem pernoite (bate-volta, passagem, "
@@ -135,7 +120,7 @@ def main():
         ws.merge_cells(start_row=5, start_column=c, end_row=5, end_column=c + len(ds) - 1)
         cel = ws.cell(row=5, column=c, value=reg.upper())
         for j in range(c, c + len(ds)):
-            ws.cell(row=5, column=j).fill = PatternFill("solid", fgColor=COR_REGIAO[k])
+            ws.cell(row=5, column=j).fill = PatternFill("solid", fgColor=COR_REGIAO[k % len(COR_REGIAO)])
             ws.cell(row=5, column=j).border = BORDA
         cel.font = Font(bold=True, size=9)
         cel.alignment = Alignment(horizontal="center", vertical="center")
@@ -169,17 +154,16 @@ def main():
             faixa = not faixa
             familia_ant = info["familia"]
         fundo = PatternFill("solid", fgColor=AZUL_CLARO if faixa else BRANCO)
-        p = precos[nome]
         ws.cell(row=r, column=1, value=info["familia"])
         ws.cell(row=r, column=2, value=nome)
         ws.cell(row=r, column=3, value=f"=INDEX(Base!$C$2:$C${n_base},MATCH($B{r},{rngA},0))")
         ws.cell(row=r, column=4, value=f"=SUMIFS({rngG},{rngA},$B{r})")
-        if p["preco_vista_baixa"]:
-            cel = ws.cell(row=r, column=5, value=float(p["preco_vista_baixa"]))
+        if info["preco"]:
+            cel = ws.cell(row=r, column=5, value=float(info["preco"]))
             cel.number_format = '"R$" #,##0'
         else:
-            ws.cell(row=r, column=5, value=p["obs"] or None)
-        cat = p["categoria"]
+            ws.cell(row=r, column=5, value=info["obs_preco"] or None)
+        cat = info["categoria"]
         if cat != "LIGHT":
             ws.cell(row=r, column=5).number_format = f'"R$" #,##0" ({cat.title()})"'
         for j, d in enumerate(todos_dest):
@@ -190,12 +174,12 @@ def main():
                            f'IF(SUMIFS({rngG},{rngA},$B{r},{rngF},{ref})=0,"●",'
                            f'SUMIFS({rngG},{rngA},$B{r},{rngF},{ref})))'))
         traj = " → ".join(
-            f"{nome_curto(l['destino'])} ({l['noites_destino']})" if int(l["noites_destino"])
-            else f"{nome_curto(l['destino'])} (●)"
-            for l in info["trajeto"])
+            f"{nome_curto(p['destino'])} ({p['noites']})" if p["noites"]
+            else f"{nome_curto(p['destino'])} (●)"
+            for p in info["trajeto"])
         ws.cell(row=r, column=col_traj, value=traj)
         ws.cell(row=r, column=col_pdf,
-                value=f'=HYPERLINK("https://drive.google.com/file/d/{p["arquivo_id"]}/view","abrir")')
+                value=f'=HYPERLINK("https://drive.google.com/file/d/{info["pdf"]}/view","abrir")')
         cond = []
         for k in (3, 4, 5):
             cond.append(f'OR(Busca!$C${k}="",COUNTIFS({rngA},$B{r},{rngF},Busca!$C${k})>0)')
@@ -320,13 +304,10 @@ def main():
         ("Busca: escolha até 3 destinos, duração máxima e família. A lista e o destaque amarelo "
          "na Matriz se atualizam sozinhos.", False),
         ("", False),
-        ("PARA INCLUIR UM ROTEIRO NOVO", True),
-        ("1) Na aba Base, adicione uma linha por destino (na ordem do trajeto), com as noites. "
-         "Use 0 noites para bate-volta, passagem, chegada ou saída.", False),
-        ("2) Na Matriz, insira uma linha com Família e Nome iguais aos da Base e copie as fórmulas da "
-         "linha de cima. Dias, noites e destinos se preenchem sozinhos.", False),
-        ("3) Destino novo? Inclua o nome na aba Destinos e crie a coluna correspondente na Matriz "
-         "(copiando uma coluna vizinha e trocando o cabeçalho).", False),
+        ("PARA INCLUIR OU CORRIGIR UM ROTEIRO", True),
+        ("Esta planilha é gerada automaticamente. Mudanças feitas aqui não voltam para o guia: edite os "
+         "arquivos roteiros.csv e paradas.csv (pasta matriz_destinos/dados do repositório) e rode "
+         "'python3 matriz_destinos/gerar.py', que valida os dados e gera de novo a planilha e a página.", False),
         ("", False),
         ("Fonte: PDFs de 2026 (versão 2 pessoas) de cada pasta em Roteiros/Drive, lidos em 04/11/2026. "
          "O trajeto é o mesmo para todas as bases de pessoas.", False),
@@ -343,7 +324,7 @@ def main():
     wb.active = 0
     SAIDA.parent.mkdir(exist_ok=True)
     wb.save(SAIDA)
-    print(f"OK: {SAIDA}  ({len(ordem)} roteiros, {len(todos_dest)} destinos, {len(base)} linhas na Base)")
+    print(f"OK: {SAIDA}  ({len(ordem)} roteiros, {len(todos_dest)} destinos, {n_paradas} linhas na Base)")
 
 
 if __name__ == "__main__":

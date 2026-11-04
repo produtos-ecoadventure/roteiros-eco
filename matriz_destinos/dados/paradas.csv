@@ -1,0 +1,240 @@
+roteiro;ordem;destino;noites;obs
+Essencial;1;São Luís/MA;1;
+Essencial;2;Barreirinhas/MA;2;
+Essencial;3;Parnaíba/PI;1;
+Essencial;4;Jericoacoara/CE;2;
+Essencial;5;Fortaleza/CE;0;saída
+Essencial Plus;1;São Luís/MA;1;
+Essencial Plus;2;Barreirinhas/MA;2;
+Essencial Plus;3;Parnaíba/PI;1;
+Essencial Plus;4;Barra Grande/PI;2;
+Essencial Plus;5;Jericoacoara/CE;2;
+Essencial Plus;6;Fortaleza/CE;0;saída
+In Natura;1;São Luís/MA;1;
+In Natura;2;Santo Amaro/MA;2;
+In Natura;3;Barreirinhas/MA;2;
+In Natura;4;Parnaíba/PI;1;
+In Natura;5;Jericoacoara/CE;2;
+In Natura;6;Fortaleza/CE;0;saída
+Definitiva;1;São Luís/MA;1;
+Definitiva;2;Santo Amaro/MA;2;
+Definitiva;3;Barreirinhas/MA;1;
+Definitiva;4;Atins/MA;2;
+Definitiva;5;Parnaíba/PI;1;
+Definitiva;6;Barra Grande/PI;2;
+Definitiva;7;Jericoacoara/CE;3;
+Definitiva;8;Guajiru/CE;1;
+Definitiva;9;Fortaleza/CE;0;saída
+Rota das Praias;1;São Luís/MA;1;
+Rota das Praias;2;Barreirinhas/MA;1;
+Rota das Praias;3;Atins/MA;2;
+Rota das Praias;4;Tutóia/MA;1;
+Rota das Praias;5;Parnaíba/PI;1;
+Rota das Praias;6;Barra Grande/PI;2;
+Rota das Praias;7;Camocim/CE;2;
+Rota das Praias;8;Jericoacoara/CE;2;
+Rota das Praias;9;Fortaleza/CE;0;saída
+Grande Aventura;1;São Luís/MA;1;
+Grande Aventura;2;Barreirinhas/MA;2;
+Grande Aventura;3;Parnaíba/PI;1;
+Grande Aventura;4;Jericoacoara/CE;2;
+Grande Aventura;5;Fortaleza/CE;1;
+Grande Aventura;6;Canoa Quebrada/CE;1;
+Grande Aventura;7;Ponta do Mel/RN;1;
+Grande Aventura;8;Galinhos/RN;1;
+Grande Aventura;9;São Miguel do Gostoso/RN;1;
+Grande Aventura;10;Natal/RN;0;saída
+Essencial Flow;1;São Luís/MA;1;
+Essencial Flow;2;Barreirinhas/MA;3;
+Essencial Flow;3;Santo Amaro/MA;0;bate-volta (ou Atins)
+Essencial Flow;4;Atins/MA;0;bate-volta (ou Santo Amaro)
+Essencial Flow;5;Parnaíba/PI;1;
+Essencial Flow;6;Jericoacoara/CE;2;
+Essencial Flow;7;Fortaleza/CE;0;saída
+Essencial Extend;1;São Luís/MA;1;
+Essencial Extend;2;Barreirinhas/MA;2;
+Essencial Extend;3;Parnaíba/PI;1;
+Essencial Extend;4;Jericoacoara/CE;2;
+Essencial Extend;5;Fortaleza/CE;1;
+Essencial Deep;1;São Luís/MA;1;
+Essencial Deep;2;Barreirinhas/MA;2;
+Essencial Deep;3;Santo Amaro/MA;0;bate-volta
+Essencial Deep;4;Atins/MA;2;
+Essencial Deep;5;Parnaíba/PI;1;
+Essencial Deep;6;Jericoacoara/CE;2;
+Essencial Deep;7;Fortaleza/CE;0;saída
+Essencial Vibe;1;São Luís/MA;1;
+Essencial Vibe;2;Santo Amaro/MA;2;
+Essencial Vibe;3;Parnaíba/PI;1;
+Essencial Vibe;4;Jericoacoara/CE;2;
+Essencial Vibe;5;Fortaleza/CE;0;saída
+In Natura Extend;1;São Luís/MA;1;
+In Natura Extend;2;Santo Amaro/MA;2;
+In Natura Extend;3;Barreirinhas/MA;2;
+In Natura Extend;4;Parnaíba/PI;1;
+In Natura Extend;5;Barra Grande/PI;2;
+In Natura Extend;6;Jericoacoara/CE;2;
+In Natura Extend;7;Fortaleza/CE;0;saída
+Rota das Dunas;1;Fortaleza/CE;1;
+Rota das Dunas;2;Canoa Quebrada/CE;1;
+Rota das Dunas;3;Ponta do Mel/RN;1;
+Rota das Dunas;4;Galinhos/RN;1;
+Rota das Dunas;5;São Miguel do Gostoso/RN;1;
+Rota das Dunas;6;Natal/RN;0;saída
+Rota das Areias;1;São Luís/MA;1;
+Rota das Areias;2;Barreirinhas/MA;2;
+Rota das Areias;3;Atins/MA;2;
+Rota das Areias;4;Parnaíba/PI;2;
+Rota das Areias;5;Teresina/PI;0;saída
+Rota dos Ventos;1;Fortaleza/CE;1;
+Rota dos Ventos;2;Jericoacoara/CE;3;
+Rota dos Ventos;3;Parnaíba/PI;1;
+Rota dos Ventos;4;Fortaleza/CE;0;saída
+Rota do Sol Poente (7 dias);1;Fortaleza/CE;3;
+Rota do Sol Poente (7 dias);2;Canoa Quebrada/CE;0;bate-volta
+Rota do Sol Poente (7 dias);3;Jericoacoara/CE;3;
+Rota do Sol Poente (7 dias);4;Fortaleza/CE;0;saída
+Rota do Sol Poente (5 dias);1;Fortaleza/CE;1;
+Rota do Sol Poente (5 dias);2;Jericoacoara/CE;3;
+Rota do Sol Poente (5 dias);3;Fortaleza/CE;0;saída
+Barra Grande (5 dias);1;Parnaíba/PI;0;chegada
+Barra Grande (5 dias);2;Barra Grande/PI;4;
+Preá Experience;1;Preá/CE;6;chegada/saída aeroporto de Jericoacoara
+Santo Amaro Explore;1;São Luís/MA;1;
+Santo Amaro Explore;2;Santo Amaro/MA;2;
+Santo Amaro Explore;3;São Luís/MA;1;
+Santo Amaro Explore (privativo);1;São Luís/MA;1;
+Santo Amaro Explore (privativo);2;Santo Amaro/MA;2;
+Santo Amaro Explore (privativo);3;São Luís/MA;1;
+Serra da Capivara;1;Petrolina/PE;0;chegada/saída
+Serra da Capivara;2;São Raimundo Nonato/PI;4;
+Rota Pré-Histórica;1;Petrolina/PE;0;chegada
+Rota Pré-Histórica;2;São Raimundo Nonato/PI;3;
+Rota Pré-Histórica;3;Teresina/PI;1;
+Rota Pré-Histórica;4;Buriti dos Montes/PI;1;
+Rota Pré-Histórica;5;Sete Cidades/PI;0;visita no trajeto
+Rota Pré-Histórica;6;Parnaíba/PI;2;
+Rota Pré-Histórica;7;Teresina/PI;0;saída
+Bate e volta nos Lençóis;1;São Luís/MA;0;chegada/saída
+Bate e volta nos Lençóis;2;Barreirinhas/MA;2;versões de 1, 2 ou 3 dias (0 a 2 noites)
+Bate e volta nos Lençóis;3;Santo Amaro/MA;0;bate-volta (só na versão 3 dias)
+Trekking (7 dias);1;São Luís/MA;1;
+Trekking (7 dias);2;Barreirinhas/MA;1;
+Trekking (7 dias);3;Travessia dos Lençóis/MA;3;trekking com pernoite em redários: Baixa Grande, Queimada dos Britos, Betânia
+Trekking (7 dias);4;Santo Amaro/MA;1;
+Trekking (7 dias);5;São Luís/MA;0;saída
+Trekking (5 dias);1;Barreirinhas/MA;1;
+Trekking (5 dias);2;Travessia dos Lençóis/MA;2;trekking com pernoite em redários: Baixa Grande, Queimada dos Britos
+Trekking (5 dias);3;Santo Amaro/MA;1;
+Trekking (5 dias);4;São Luís/MA;0;chegada/saída
+Mini pacote nos Lençóis;1;Parnaíba/PI;0;chegada/saída
+Mini pacote nos Lençóis;2;Barreirinhas/MA;2;versões de 2 ou 3 dias (1 a 2 noites)
+Mini pacote em Jeri;1;Parnaíba/PI;0;chegada/saída
+Mini pacote em Jeri;2;Jericoacoara/CE;2;versões de 2 ou 3 dias (1 a 2 noites)
+Econômica One;1;São Luís/MA;1;
+Econômica One;2;Barreirinhas/MA;2;
+Econômica One;3;Parnaíba/PI;1;
+Econômica One;4;Jericoacoara/CE;2;
+Econômica One;5;Fortaleza/CE;0;saída
+Econômica One Max;1;São Luís/MA;1;
+Econômica One Max;2;Santo Amaro/MA;2;
+Econômica One Max;3;Parnaíba/PI;1;
+Econômica One Max;4;Jericoacoara/CE;2;
+Econômica One Max;5;Fortaleza/CE;0;saída
+Econômica One Life;1;São Luís/MA;1;
+Econômica One Life;2;Barreirinhas/MA;3;
+Econômica One Life;3;Santo Amaro/MA;0;bate-volta (ou Atins)
+Econômica One Life;4;Atins/MA;0;bate-volta (ou Santo Amaro)
+Econômica One Life;5;Parnaíba/PI;1;
+Econômica One Life;6;Jericoacoara/CE;2;
+Econômica One Life;7;Fortaleza/CE;0;saída
+Econômica One Explore;1;São Luís/MA;1;
+Econômica One Explore;2;Barreirinhas/MA;4;
+Econômica One Explore;3;Santo Amaro/MA;0;bate-volta
+Econômica One Explore;4;Atins/MA;0;bate-volta
+Econômica One Explore;5;Parnaíba/PI;1;
+Econômica One Explore;6;Jericoacoara/CE;2;
+Econômica One Explore;7;Fortaleza/CE;0;saída
+Econômica One Extend;1;São Luís/MA;1;
+Econômica One Extend;2;Barreirinhas/MA;2;
+Econômica One Extend;3;Parnaíba/PI;1;
+Econômica One Extend;4;Jericoacoara/CE;2;
+Econômica One Extend;5;Fortaleza/CE;1;
+Econômica Full;1;São Luís/MA;1;
+Econômica Full;2;Santo Amaro/MA;2;
+Econômica Full;3;Barreirinhas/MA;2;
+Econômica Full;4;Parnaíba/PI;0;passeio Delta no trajeto
+Econômica Full;5;Barra Grande/PI;3;
+Econômica Full;6;Jericoacoara/CE;3;
+Econômica Full;7;Fortaleza/CE;2;
+Econômica Large;1;São Luís/MA;1;
+Econômica Large;2;Barreirinhas/MA;2;
+Econômica Large;3;Parnaíba/PI;0;passeio Delta no trajeto
+Econômica Large;4;Barra Grande/PI;3;
+Econômica Large;5;Jericoacoara/CE;2;
+Econômica Large;6;Fortaleza/CE;0;saída
+Econômica Roots;1;São Luís/MA;1;
+Econômica Roots;2;Santo Amaro/MA;2;
+Econômica Roots;3;Barreirinhas/MA;2;
+Econômica Roots;4;Parnaíba/PI;1;
+Econômica Roots;5;Jericoacoara/CE;3;
+Econômica Roots;6;Fortaleza/CE;1;
+Eco Cultural;1;São Luís/MA;1;
+Eco Cultural;2;Barreirinhas/MA;5;
+Eco Cultural;3;Atins/MA;0;bate-volta (Canto do Atins)
+Eco Cultural;4;Santo Amaro/MA;0;bate-volta
+Eco Cultural;5;São Luís/MA;0;saída
+Eco Cultural Plus;1;São Luís/MA;2;
+Eco Cultural Plus;2;Santo Amaro/MA;2;
+Eco Cultural Plus;3;Barreirinhas/MA;1;
+Eco Cultural Plus;4;Atins/MA;2;
+Eco Cultural Plus;5;São Luís/MA;0;saída
+Eco Cultural Classic;1;São Luís/MA;1;
+Eco Cultural Classic;2;Barreirinhas/MA;3;
+Eco Cultural Classic;3;Santo Amaro/MA;0;bate-volta
+Eco Cultural Classic;4;São Luís/MA;0;saída
+Eco Cultural Sense;1;São Luís/MA;1;
+Eco Cultural Sense;2;Santo Amaro/MA;2;
+Eco Cultural Sense;3;Atins/MA;3;
+Eco Cultural Sense;4;São Luís/MA;0;saída
+Alhurez;1;São Luís/MA;1;
+Alhurez;2;Santo Amaro/MA;2;
+Alhurez;3;Barreirinhas/MA;2;
+Alhurez;4;Parnaíba/PI;1;
+Alhurez;5;Jericoacoara/CE;2;
+Alhurez;6;Fortaleza/CE;0;saída
+Alhurez Sense;1;São Luís/MA;1;
+Alhurez Sense;2;Santo Amaro/MA;2;
+Alhurez Sense;3;Atins/MA;3;
+Alhurez Sense;4;São Luís/MA;0;saída
+Definitiva Invertida;1;Fortaleza/CE;1;
+Definitiva Invertida;2;Guajiru/CE;1;
+Definitiva Invertida;3;Jericoacoara/CE;3;
+Definitiva Invertida;4;Barra Grande/PI;2;
+Definitiva Invertida;5;Parnaíba/PI;1;
+Definitiva Invertida;6;Atins/MA;2;
+Definitiva Invertida;7;Barreirinhas/MA;1;
+Definitiva Invertida;8;Santo Amaro/MA;2;
+Definitiva Invertida;9;São Luís/MA;0;saída
+Essencial Invertida;1;Fortaleza/CE;1;
+Essencial Invertida;2;Jericoacoara/CE;2;
+Essencial Invertida;3;Parnaíba/PI;1;
+Essencial Invertida;4;Barreirinhas/MA;2;
+Essencial Invertida;5;São Luís/MA;0;saída
+In Natura Invertida;1;Fortaleza/CE;1;
+In Natura Invertida;2;Jericoacoara/CE;2;
+In Natura Invertida;3;Parnaíba/PI;1;
+In Natura Invertida;4;Barreirinhas/MA;2;
+In Natura Invertida;5;Santo Amaro/MA;2;
+In Natura Invertida;6;São Luís/MA;0;saída
+Econômica One Invertida;1;Fortaleza/CE;1;
+Econômica One Invertida;2;Jericoacoara/CE;2;
+Econômica One Invertida;3;Parnaíba/PI;1;
+Econômica One Invertida;4;Barreirinhas/MA;2;
+Econômica One Invertida;5;São Luís/MA;0;saída
+Econômica Large Invertida;1;Fortaleza/CE;1;
+Econômica Large Invertida;2;Jericoacoara/CE;2;
+Econômica Large Invertida;3;Barra Grande/PI;2;
+Econômica Large Invertida;4;Parnaíba/PI;1;
+Econômica Large Invertida;5;Barreirinhas/MA;2;
+Econômica Large Invertida;6;São Luís/MA;0;saída

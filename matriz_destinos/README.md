@@ -9,8 +9,8 @@ Tudo sai da pasta `dados/`. Para mudar um roteiro, um texto ou um destino, edite
 |---|---|---|
 | `familias.csv` | ordem; familia; descricao | A descrição é o texto que o consultor lê. A ordem define a ordem na página. |
 | `destinos.csv` | ordem; destino; regiao; lat; lon | Nome no formato `Cidade/UF`. Coordenadas aproximadas para o mapa. |
-| `roteiros_destinos.csv` | roteiro; familia; dias; noites; ordem; destino; noites_destino; obs | Uma linha por parada, na ordem do trajeto. |
-| `roteiros_precos.csv` | roteiro; categoria; base; preco_vista_baixa; arquivo_id; obs | Usado para a categoria (Light/Stars) e o link do PDF. Os preços só aparecem na planilha. |
+| `roteiros.csv` | roteiro; familia; dias; noites; categoria; arquivo_pdf; preco_vista_baixa; obs_preco | Uma linha por roteiro. `arquivo_pdf` é o id do PDF no Drive. Preço (base 2 pessoas, baixa temporada) só aparece na planilha. |
+| `paradas.csv` | roteiro; ordem; destino; noites; obs | Uma linha por parada, na ordem do trajeto. |
 | `mapa_base.json` | costa, divisas, siglas | Contorno simplificado do mapa esquemático. |
 
 ## Convenções
@@ -28,7 +28,18 @@ Para o processo e mostra o problema quando:
 - a ordem das paradas não é 1, 2, 3…;
 - um destino não existe em `destinos.csv` (ou está sem coordenada válida);
 - uma família não existe em `familias.csv`, ou uma família/destino ficou sem uso;
-- um roteiro está sem categoria ou sem id do PDF.
+- um roteiro está sem categoria válida (Light, Comfort, Stars) ou sem id do PDF;
+- há parada de um roteiro que não existe em `roteiros.csv`.
+
+Os testes (`test_dados.py`) garantem que essas regras continuam funcionando:
+`python3 -m unittest discover -s matriz_destinos -t matriz_destinos`.
+
+## Como incluir um roteiro novo
+
+1. Uma linha em `roteiros.csv` (família, dias, noites, categoria, id do PDF).
+2. Uma linha por parada em `paradas.csv`, na ordem do trajeto.
+3. Destino novo? Uma linha em `destinos.csv` com região e coordenadas.
+4. `python3 gerar.py` e, se a validação passar, commit.
 
 ## Fonte
 

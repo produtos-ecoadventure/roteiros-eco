@@ -23,11 +23,12 @@ matriz_destinos/
   dados/                  FONTE ÚNICA — edite só aqui
     familias.csv          ordem; familia; descricao (texto que o consultor lê)
     destinos.csv          ordem; destino; regiao; lat; lon
-    roteiros_destinos.csv uma linha por parada, na ordem do trajeto
-    roteiros_precos.csv   categoria (Light/Stars) e id do PDF no Drive
+    roteiros.csv          uma linha por roteiro: família, dias, noites, categoria, id do PDF (e preço, só p/ planilha)
+    paradas.csv           uma linha por parada: roteiro; ordem; destino; noites; obs
     mapa_base.json        costa, divisas estaduais e siglas do mapa esquemático
   base.py                 leitura + regras de validação
   validar.py              confere os dados (sai com erro se algo não bate)
+  test_dados.py           testes (python3 -m unittest discover -s matriz_destinos -t matriz_destinos)
   gerar.py                valida e gera tudo
   gerar_planilha.py       saida/MATRIZ_DESTINOS_POR_ROTEIRO_2026.xlsx
   gerar_pagina.py         saida/matriz_destinos.html (a partir de modelo_pagina.html)
