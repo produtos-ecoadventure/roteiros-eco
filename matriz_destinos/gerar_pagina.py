@@ -25,8 +25,6 @@ def main():
         r["t"].append([l["destino"], int(l["noites_destino"]), l["obs"]])
     for nome, r in rot.items():
         p = precos[nome]
-        r["p"] = int(p["preco_vista_baixa"]) if p["preco_vista_baixa"] else None
-        r["px"] = p["obs"] if not p["preco_vista_baixa"] else ""
         r["cat"] = p["categoria"].title()
         r["pdf"] = p["arquivo_id"]
     dados = {
