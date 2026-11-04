@@ -5,6 +5,7 @@ on:
     paths: ["matriz_destinos/**", "saida/**", ".github/workflows/guia-roteiros.yml"]
   pull_request:
     paths: ["matriz_destinos/**", "saida/**"]
+  workflow_dispatch:
 
 jobs:
   validar:
