@@ -1,8 +1,6 @@
 """Gera a Matriz de Destinos por Roteiro (2026) em .xlsx.
 
-Entrada (separador ;):
-  dados/roteiros_destinos.csv  -> uma linha por (roteiro, destino), na ordem do trajeto
-  dados/roteiros_precos.csv    -> preço "a partir de" (2 pessoas, baixa temporada) e id do PDF no Drive
+Entrada: a fonte única em dados/ (ver base.py).
 
 Saída:
   ../saida/MATRIZ_DESTINOS_POR_ROTEIRO_2026.xlsx
@@ -24,21 +22,11 @@ from openpyxl.worksheet.datavalidation import DataValidation
 AQUI = Path(__file__).parent
 SAIDA = AQUI.parent / "saida" / "MATRIZ_DESTINOS_POR_ROTEIRO_2026.xlsx"
 
-# Ordem geográfica (litoral de oeste para leste, depois interior do Piauí)
-DESTINOS = OrderedDict([
-    ("Maranhão", ["São Luís/MA", "Santo Amaro/MA", "Barreirinhas/MA", "Atins/MA",
-                  "Travessia dos Lençóis/MA", "Tutóia/MA"]),
-    ("Piauí – litoral", ["Parnaíba/PI", "Barra Grande/PI"]),
-    ("Ceará", ["Camocim/CE", "Jericoacoara/CE", "Preá/CE", "Guajiru/CE",
-               "Fortaleza/CE", "Canoa Quebrada/CE"]),
-    ("Rio Grande do Norte", ["Ponta do Mel/RN", "Galinhos/RN",
-                             "São Miguel do Gostoso/RN", "Natal/RN"]),
-    ("Piauí – interior / PE", ["Teresina/PI", "Sete Cidades/PI", "Buriti dos Montes/PI",
-                               "São Raimundo Nonato/PI", "Petrolina/PE"]),
-])
-FAMILIAS = ["Essencial", "In Natura", "Definitiva", "Grande Aventura", "Rotas",
-            "Invertidas", "Econômicas", "Eco Culturais", "Alhurez", "Explore",
-            "Experience", "Trekking", "Mini pacotes", "Piauí Pré-Histórico"]
+# Destinos (por região, em ordem geográfica) e famílias vêm da fonte única em dados/
+import base as _base
+_B = _base.carregar()
+DESTINOS = _B["regioes"]
+FAMILIAS = _B["ordem_familias"]
 COR_REGIAO = ["F4CCCC", "FCE5CD", "FFF2CC", "D9EAD3", "CFE2F3"]
 
 PRETO, BRANCO = "000000", "FFFFFF"

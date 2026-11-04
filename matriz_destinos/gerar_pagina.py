@@ -1,41 +1,36 @@
-"""Gera a página interativa (saida/matriz_destinos.html) a partir dos mesmos CSVs da planilha."""
-import csv
+"""Gera a página do guia (saida/matriz_destinos.html) a partir da fonte única em dados/."""
 import json
-from collections import OrderedDict
 from pathlib import Path
 
-from gerar_planilha import DESTINOS, FAMILIAS
+import base
 
 AQUI = Path(__file__).parent
 SAIDA = AQUI.parent / "saida" / "matriz_destinos.html"
 MODELO = AQUI / "modelo_pagina.html"
 
 
-def ler(nome):
-    with open(AQUI / "dados" / nome, encoding="utf-8") as f:
-        return list(csv.DictReader(f, delimiter=";"))
-
-
 def main():
-    precos = {p["roteiro"]: p for p in ler("roteiros_precos.csv")}
-    rot = OrderedDict()
-    for l in ler("roteiros_destinos.csv"):
-        r = rot.setdefault(l["roteiro"], {
-            "n": l["roteiro"], "f": l["familia"], "d": int(l["dias"]), "nt": int(l["noites"]), "t": []})
-        r["t"].append([l["destino"], int(l["noites_destino"]), l["obs"]])
-    for nome, r in rot.items():
-        p = precos[nome]
-        r["cat"] = p["categoria"].title()
-        r["pdf"] = p["arquivo_id"]
+    b = base.carregar()
+    roteiros = []
+    for nome, r in b["roteiros"].items():
+        x = b["extras"][nome]
+        roteiros.append({
+            "n": nome, "f": r["familia"], "d": r["dias"], "nt": r["noites"],
+            "t": [[p["destino"], p["noites"], p["obs"]] for p in r["trajeto"]],
+            "cat": x["categoria"].title(), "pdf": x["arquivo_id"],
+        })
     dados = {
-        "regioes": [{"nome": k, "destinos": v} for k, v in DESTINOS.items()],
-        "familias": FAMILIAS,
-        "roteiros": list(rot.values()),
+        "regioes": [{"nome": k, "destinos": v} for k, v in b["regioes"].items()],
+        "familias": b["ordem_familias"],
+        "sobre": b["descricao"],
+        "geo": {k: list(v) for k, v in b["geo"].items()},
+        "mapa": {k: v for k, v in b["mapa"].items() if not k.startswith("_")},
+        "roteiros": roteiros,
     }
     html = MODELO.read_text(encoding="utf-8").replace(
         "/*__DADOS__*/null", json.dumps(dados, ensure_ascii=False, separators=(",", ":")))
     SAIDA.write_text(html, encoding="utf-8")
-    print(f"OK: {SAIDA} ({len(rot)} roteiros)")
+    print(f"OK: {SAIDA} ({len(roteiros)} roteiros)")
 
 
 if __name__ == "__main__":

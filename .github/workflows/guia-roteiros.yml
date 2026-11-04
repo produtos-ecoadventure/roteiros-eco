@@ -1,0 +1,27 @@
+name: Guia de roteiros
+
+on:
+  push:
+    paths: ["matriz_destinos/**", "saida/**", ".github/workflows/guia-roteiros.yml"]
+  pull_request:
+    paths: ["matriz_destinos/**", "saida/**"]
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Validar os dados
+        run: python3 matriz_destinos/validar.py
+      - name: Gerar a página e a planilha
+        run: python3 matriz_destinos/gerar.py
+      - name: Conferir se a página publicada está em dia com os dados
+        run: |
+          git diff --exit-code -- saida/matriz_destinos.html || {
+            echo "::error::saida/matriz_destinos.html está desatualizada. Rode 'python3 matriz_destinos/gerar.py' e faça o commit."
+            exit 1
+          }

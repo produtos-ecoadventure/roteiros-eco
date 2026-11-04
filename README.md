@@ -1,33 +1,28 @@
-# Tabela de Prioritários — Tarifário Receptivo 2026
+# Guia de Roteiros — Eco Adventure Tour 2026
 
-Projeto para gerar, numa sessão em nuvem do Claude Code, uma planilha automatizada
-no modelo da Tabela de Prioritários 2026, só com os serviços do Tarifário Receptivo.
+Guia para consultores novos conhecerem os 46 roteiros da Eco: famílias, trajeto de cada
+roteiro no mapa e quantas noites ele passa em cada destino.
 
-As instruções completas para o Claude estão em `CLAUDE.md`.
+## O que é gerado
 
-## Como começar a sessão em nuvem
+| Arquivo | Para quê |
+|---|---|
+| `saida/matriz_destinos.html` | O guia (página publicada como artifact "Guia de Roteiros Eco 2026") |
+| `saida/MATRIZ_DESTINOS_POR_ROTEIRO_2026.xlsx` | Planilha de apoio: matriz roteiros × destinos, busca por destinos e base editável |
 
-1. **Crie um repositório privado no GitHub** (ex.: `tabela-prioritarios-tarifario`).
-   Ele precisa ser privado, porque contém valores de fornecedores.
-2. **Envie esta pasta** para o repositório. Pelo site do GitHub: "Add file" → "Upload files",
-   arraste o conteúdo da pasta (mantendo as subpastas) e faça o commit.
-3. **Abra uma sessão em nuvem**: acesse claude.ai/code (ou a aba Code no app),
-   conecte o GitHub se ainda não estiver conectado, escolha o repositório e inicie.
-4. **Cole o pedido inicial**:
+## Como atualizar
 
-   > Leia o CLAUDE.md e execute o projeto: gere a planilha automatizada em `saida/`,
-   > o relatório de casamento, valide as fórmulas e faça o commit numa branch.
+1. Edite os arquivos em `matriz_destinos/dados/` (detalhes em `matriz_destinos/README.md`).
+2. Rode:
 
-5. Quando terminar, baixe `saida/TABELA_PRIORITARIOS_TARIFARIO_RECEPTIVO_2026.xlsx`
-   pela branch no GitHub.
+   ```bash
+   pip install -r requirements.txt
+   python3 matriz_destinos/gerar.py
+   ```
 
-## Estrutura
+   O comando valida os dados primeiro (soma de noites, destinos com coordenadas, família
+   existente, PDF informado) e só gera se estiver tudo certo.
+3. Faça o commit. No GitHub, a ação **Guia de roteiros** repete a validação e avisa se a
+   página ficou desatualizada em relação aos dados.
 
-```
-CLAUDE.md                         instruções do projeto para o Claude
-dados/
-  originais/                      planilha-modelo e PDF (não editar)
-  servicos_tarifario_2026.csv     71 serviços / 182 faixas extraídos do PDF
-scripts/                          scripts que a sessão criar
-saida/                            planilha final e relatório
-```
+Instruções para o Claude: `CLAUDE.md`.

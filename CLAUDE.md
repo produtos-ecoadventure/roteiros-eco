@@ -1,81 +1,53 @@
-# Projeto: Tabela de Prioritários — Tarifário Receptivo 2026
+# Projeto: Guia de Roteiros Eco Adventure Tour 2026
 
 Eco Adventure Tour. Responda sempre em português do Brasil.
 
 ## Objetivo
 
-Gerar **uma nova planilha .xlsx automatizada**, no mesmo modelo da
-`TABELA DE PRIORITÁRIOS 2026`, contendo **apenas os serviços do Tarifário
-Receptivo – Mais Vendidos 2026** (71 serviços / 182 linhas de capacidade).
+Manter um **guia de roteiros para consultores novos**: por onde cada roteiro passa,
+quantas noites fica em cada destino e o que diferencia uma família de outra.
+O projeto **não** trata de tarifários nem de preços de fornecedores.
 
-Saída esperada: `saida/TABELA_PRIORITARIOS_TARIFARIO_RECEPTIVO_2026.xlsx`
+## Fonte dos dados
 
-## Arquivos de entrada
+Os roteiros vêm do Google Drive, pasta `Roteiros` (id `1ny4Q1bqaReKJG2nBRmYq6XseLSU3VgXt`),
+uma subpasta por roteiro (as pastas `1 - Econômicas`, `2 - Eco Culturais`, `3 - Alhurez`
+e `4 - Invertidas` têm subpastas). Em cada pasta basta ler **um** PDF (de preferência
+`2 PESSOAS`): o trajeto é igual para todas as bases de pessoas e categorias de hotel.
+As noites saem das linhas "Pernoite em …" e devem bater com o "X dias e Y noites" do PDF.
 
-| Arquivo | O que é |
-|---|---|
-| `dados/originais/TABELA_DE_PRIORITARIOS_2026.xlsx` | Planilha-modelo (5 abas). **Somente leitura.** |
-| `dados/originais/TARIFARIO_RECEPTIVO_2026.pdf` | Tarifário de 30 páginas (fonte da lista de serviços) |
-| `dados/servicos_tarifario_2026.csv` | Serviços do PDF já extraídos (separador `;`), conferidos: todas as parcelas batem com a fórmula |
+## Estrutura
 
-Colunas do CSV: `id; tipo (TRANS/PASSE); carater (COMP/PVT); servico; horarios; duracao; operacao; valor_vista; parcela_6x; pagina_pdf`.
-Linhas com o mesmo `id` são faixas de capacidade do mesmo serviço.
+```
+matriz_destinos/
+  dados/                  FONTE ÚNICA — edite só aqui
+    familias.csv          ordem; familia; descricao (texto que o consultor lê)
+    destinos.csv          ordem; destino; regiao; lat; lon
+    roteiros_destinos.csv uma linha por parada, na ordem do trajeto
+    roteiros_precos.csv   categoria (Light/Stars) e id do PDF no Drive
+    mapa_base.json        costa, divisas estaduais e siglas do mapa esquemático
+  base.py                 leitura + regras de validação
+  validar.py              confere os dados (sai com erro se algo não bate)
+  gerar.py                valida e gera tudo
+  gerar_planilha.py       saida/MATRIZ_DESTINOS_POR_ROTEIRO_2026.xlsx
+  gerar_pagina.py         saida/matriz_destinos.html (a partir de modelo_pagina.html)
+saida/                    arquivos gerados (não editar à mão)
+```
 
-## Estrutura da planilha-modelo (aba "Fornecedores com NF" é a versão completa)
+## Regras
 
-- Linhas 1–7: legenda de cores (A1 "Legenda", F1 título, AA1 "LEGENDA CORES").
-- Linha 8: cabeçalho. Repetido antes de cada seção (TRANSFERS na linha 8, PASSEIOS na 94).
-- Colunas:
-  - A nº · B TIPO · C CARÁTER · D SERVIÇO · E ORIENTAÇÃO · F QUANT.
-  - G–R FORNE. 1 a 12 (texto livre: "FORNECEDOR R$ valor (ano) : ±x% do budget")
-  - S PROJETADO (15%) "SIM/NÃO" · T BUDGET 2025 COM DETALHES · U QUANT.
-  - **V BUDGET 2026** (valor de entrada, R$)
-  - **W VALOR CLIENTE 2026** `=ROUNDUP(V/0.7,0)`
-  - **X PARCELA 6X** `=ROUNDUP(W*0.1912,0)`
-  - **Y VALOR OPERADORA** `=ROUNDUP(V/0.8,0)`
-  - Z VALOR CLIENTE ANTIGO (2025) · **AA AUMENTO %** `=(W-Z)/Z` (formato 0%)
-  - **AB status do bloco**: `=IF(COUNTIF(S9:S12,"não")=COUNTA(S9:S12),"Budget fechado",IF(COUNTIF(S9:S12,"sim")=COUNTA(S9:S12),"Budget aberto","Budget parcialmente fechado"))` na 1ª linha de cada serviço, cobrindo todas as linhas do bloco.
-- Cada serviço ocupa um bloco de linhas (uma por capacidade), com A–E mesclados verticalmente.
-- Estilos: cabeçalho fundo preto/fonte branca negrito (D e V em verde `38761D`); linhas de serviço alternando azul claro `CFE2F3` e branco; V com fundo `D9EAD3`; S com fundo `B7B7B7`; moeda `[$R$ -416]#,##0.00`.
-- Abas auxiliares (fórmulas dinâmicas, HSTACK):
-  - "Budgets 2026": `=HSTACK('Fornecedores 2026'!A8:E8,'Fornecedores 2026'!S8:Y8)` linha a linha.
-  - "Parcial de Budgets": coluna A serviço (D), B status (AB) e um resumo com COUNTIF de "Budget fechado / parcialmente fechado / aberto", total e %.
-  - "Emite NF": mesma grade, com legenda "Quem emite / Quem emite com acréscimo / Quem não emite".
+1. Toda mudança de conteúdo é feita nos arquivos de `matriz_destinos/dados/`, nunca no HTML ou na planilha.
+2. Depois de editar: `python3 matriz_destinos/gerar.py` e confira que a validação passou.
+3. Convenções da base: chegada/saída sem pernoite e bate-volta = 0 noites, com o motivo em `obs`
+   (o texto "bate-volta" faz a página mostrar o destino entre parênteses).
+   Destino novo precisa de linha em `destinos.csv` com coordenadas.
+4. A página publicada é o artifact "Guia de Roteiros Eco 2026"; republique o mesmo arquivo
+   (`saida/matriz_destinos.html`) para manter o link.
+5. Identidade visual: verde `#53AF02` e azul `#2A3767` (manual da marca); fundo branco,
+   modo escuro opcional. Visual limpo: uma coisa por tela (famílias → roteiros → detalhe).
+6. As lâminas (deck "Lâminas de Destinos 2026") são editadas à parte; ao mudar roteiros, atualize-as também.
 
-## Regra-chave descoberta
+## Arquivos legados
 
-O preço do tarifário **é o VALOR CLIENTE (coluna W)** da planilha. Portanto:
-- Budget implícito = valor_vista × 0,7 (validar: `ROUNDUP(V/0.7)` deve reproduzir o valor do PDF).
-- Para cada serviço, **buscar a linha correspondente na planilha-modelo** e trazer
-  fornecedores (G–R), S, T, V, Z. Se o V do modelo não reproduzir o preço do PDF,
-  manter o V do modelo e **sinalizar a divergência** numa coluna "CONFERÊNCIA TARIFÁRIO"
-  (ex.: `=IF(W9=<valor PDF>,"OK","Diverge do tarifário")`).
-- Serviço do PDF sem correspondente no modelo: criar o bloco com V = valor_vista×0,7
-  (arredondado), fornecedores vazios, e destacar em amarelo para revisão.
-- Os nomes dos serviços diferem entre PDF e planilha (maiúsculas, "VICE-VERSA",
-  "Via Estrada" etc.). Fazer o casamento por rota + caráter + capacidade e
-  **gerar um relatório de casamento** (`saida/relatorio_casamento.md`) listando cada
-  serviço do PDF, a linha do modelo usada e as divergências.
-
-## Requisitos da planilha nova
-
-1. Abas: "Prioritários Tarifário" (principal), "Budgets", "Parcial de Budgets",
-   "Conferência" (PDF × planilha) e, se fizer sentido, "Emite NF".
-2. Tudo calculado por **fórmula** (W, X, Y, AA, AB, resumos). Alterar V deve
-   atualizar o resto. Não colar valores calculados.
-3. Preferir fórmulas compatíveis com Excel e Google Sheets; evitar HSTACK nas abas
-   auxiliares (usar referências diretas `='Prioritários Tarifário'!D9`).
-4. Manter a ordem do tarifário: Transfers (ids 1–31) e Passeios (ids 32–71).
-5. Congelar painéis no cabeçalho, filtros, larguras de coluna legíveis.
-6. Recalcular com LibreOffice (`soffice --headless`) e verificar que não há
-   erros (`#REF!`, `#VALUE!`, `#DIV/0!`); AA deve tratar Z vazio com IFERROR.
-
-## Ao terminar
-
-- Commit em uma branch, com a planilha em `saida/` e o relatório de casamento.
-- Resumo curto: quantos serviços casaram, quantos divergem do PDF, quantos novos.
-
-## Cuidados
-
-- Os dados de fornecedores e budgets são internos/confidenciais. O repositório deve ser **privado**.
-- Não alterar os arquivos em `dados/originais/`.
+`dados/originais/` e `dados/servicos_tarifario_2026.csv` são do projeto de tarifários,
+que foi descontinuado. Não são usados pelo guia.
