@@ -8,6 +8,7 @@ roteiro no mapa e quantas noites ele passa em cada destino.
 | Arquivo | Para quê |
 |---|---|
 | `saida/matriz_destinos.html` | O guia (página publicada como artifact "Guia de Roteiros Eco 2026") |
+| `saida/site/index.html` | O mesmo guia como página completa, publicada no GitHub Pages pela ação **Publicar guia no GitHub Pages** |
 | `saida/MATRIZ_DESTINOS_POR_ROTEIRO_2026.xlsx` | Planilha de apoio: matriz roteiros × destinos, busca por destinos e base editável |
 
 ## Como atualizar
@@ -26,3 +27,10 @@ roteiro no mapa e quantas noites ele passa em cada destino.
    página ficou desatualizada em relação aos dados.
 
 Instruções para o Claude: `CLAUDE.md`.
+
+## Site no GitHub Pages
+
+A ação `publicar-site.yml` publica **só** a pasta `saida/site` a cada push na `main` (ou manualmente, em Actions).
+Para funcionar, o Pages precisa estar ativo em Settings → Pages → Source: **GitHub Actions**.
+Repositório privado exige plano GitHub Pro (ou Team/Enterprise), e o site publicado fica acessível
+a quem tiver o link. A página traz `noindex` para não aparecer em buscadores.

@@ -31,8 +31,11 @@ matriz_destinos/
   test_dados.py           testes (python3 -m unittest discover -s matriz_destinos -t matriz_destinos)
   gerar.py                valida e gera tudo
   gerar_planilha.py       saida/MATRIZ_DESTINOS_POR_ROTEIRO_2026.xlsx
-  gerar_pagina.py         saida/matriz_destinos.html (a partir de modelo_pagina.html)
+  gerar_pagina.py         saida/matriz_destinos.html (artifact) e saida/site/index.html (GitHub Pages)
 saida/                    arquivos gerados (não editar à mão)
+.github/workflows/
+  guia-roteiros.yml       valida, testa e confere se as saídas estão em dia
+  publicar-site.yml       publica saida/site no GitHub Pages a cada push na main
 ```
 
 ## Regras

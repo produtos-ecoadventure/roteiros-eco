@@ -1,0 +1,32 @@
+name: Publicar guia no GitHub Pages
+
+# Publica só a pasta saida/site (a página do guia). Nada mais do repositório vai para o site.
+on:
+  push:
+    branches: [main]
+    paths: ["saida/site/**", ".github/workflows/publicar-site.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: saida/site
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -6,6 +6,17 @@ import base
 
 AQUI = Path(__file__).parent
 SAIDA = AQUI.parent / "saida" / "matriz_destinos.html"
+SITE = AQUI.parent / "saida" / "site" / "index.html"   # versão completa para o GitHub Pages
+
+CABECALHO_SITE = """<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Guia interno dos roteiros 2026 da Eco Adventure Tour para consultores.">
+<style>html,body{margin:0}</style>
+"""
 MODELO = AQUI / "modelo_pagina.html"
 
 
@@ -29,7 +40,11 @@ def main():
     html = MODELO.read_text(encoding="utf-8").replace(
         "/*__DADOS__*/null", json.dumps(dados, ensure_ascii=False, separators=(",", ":")))
     SAIDA.write_text(html, encoding="utf-8")
-    print(f"OK: {SAIDA} ({len(roteiros)} roteiros)")
+    SITE.parent.mkdir(parents=True, exist_ok=True)
+    corpo = html.index('<header class="hero')          # tudo antes disso (título, fontes, estilos) vai no <head>
+    SITE.write_text(CABECALHO_SITE + html[:corpo].replace('<meta name="claude:viewport-fit-sides" content="cover">\n', "")
+                    + "</head>\n<body>\n" + html[corpo:] + "\n</body>\n</html>\n", encoding="utf-8")
+    print(f"OK: {SAIDA} e {SITE.relative_to(AQUI.parent)} ({len(roteiros)} roteiros)")
 
 
 if __name__ == "__main__":

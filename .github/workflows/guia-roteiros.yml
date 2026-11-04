@@ -24,7 +24,7 @@ jobs:
         run: python3 matriz_destinos/gerar.py
       - name: Conferir se a página publicada está em dia com os dados
         run: |
-          git diff --exit-code -- saida/matriz_destinos.html || {
+          git diff --exit-code -- saida/matriz_destinos.html saida/site/index.html || {
             echo "::error::saida/matriz_destinos.html está desatualizada. Rode 'python3 matriz_destinos/gerar.py' e faça o commit."
             exit 1
           }
