@@ -50,8 +50,3 @@ saida/                    arquivos gerados (não editar à mão)
 5. Identidade visual: verde `#53AF02` e azul `#2A3767` (manual da marca); fundo branco,
    modo escuro opcional. Visual limpo: uma coisa por tela (famílias → roteiros → detalhe).
 6. As lâminas (deck "Lâminas de Destinos 2026") são editadas à parte; ao mudar roteiros, atualize-as também.
-
-## Arquivos legados
-
-`dados/originais/` e `dados/servicos_tarifario_2026.csv` são do projeto de tarifários,
-que foi descontinuado. Não são usados pelo guia.
