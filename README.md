@@ -22,7 +22,7 @@ roteiro no mapa e quantas noites ele passa em cada destino.
    ```
 
    O comando valida os dados primeiro (soma de noites, destinos com coordenadas, família
-   existente, PDF informado) e só gera se estiver tudo certo.
+   existente, pasta do Drive informada) e só gera se estiver tudo certo.
 3. Faça o commit. No GitHub, a ação **Guia de roteiros** repete a validação e avisa se a
    página ficou desatualizada em relação aos dados.
 

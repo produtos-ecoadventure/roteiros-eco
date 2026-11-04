@@ -27,7 +27,7 @@ def main():
         roteiros.append({
             "n": nome, "f": r["familia"], "d": r["dias"], "nt": r["noites"],
             "t": [[p["destino"], p["noites"], p["obs"]] for p in r["trajeto"]],
-            "cat": r["categoria"].title(), "pdf": r["pdf"],
+            "cat": r["categoria"].title(), "pasta": r["pasta"],
         })
     dados = {
         "regioes": [{"nome": k, "destinos": v} for k, v in b["regioes"].items()],

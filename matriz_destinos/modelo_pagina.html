@@ -397,7 +397,7 @@ function roteiro(r) {
     `<div class="fact"><span>Cidades com pernoite</span><b>${dorme}</b></div></div>` +
     `<div class="detail"><div><div class="mapbox">${mapSvg(r)}</div><p class="mapnote">Mapa esquemático. No círculo verde, o número de noites; o círculo vazado é passagem sem pernoite.</p>${insetLencois(r)}</div>` +
     `<div class="panel"><h3>Trajeto dia a dia</h3><ol class="steps">${steps}</ol>` +
-    `<a class="btn primary" href="https://drive.google.com/file/d/${encodeURIComponent(r.pdf)}/view" target="_blank" rel="noopener">Abrir PDF do roteiro ↗</a></div></div>` +
+    `<a class="btn primary" href="https://drive.google.com/drive/folders/${encodeURIComponent(r.pasta)}" target="_blank" rel="noopener">Abrir pasta do roteiro ↗</a></div></div>` +
     `<nav class="pager">${prev ? `<a href="#r-${prev.slug}"><small>← Anterior</small>${esc(prev.n)}</a>` : ""}${next ? `<a class="next" href="#r-${next.slug}"><small>Próximo →</small>${esc(next.n)}</a>` : ""}</nav>`;
 }
 

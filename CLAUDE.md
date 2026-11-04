@@ -23,7 +23,7 @@ matriz_destinos/
   dados/                  FONTE ÚNICA — edite só aqui
     familias.csv          ordem; familia; descricao (texto que o consultor lê)
     destinos.csv          ordem; destino; regiao; lat; lon
-    roteiros.csv          uma linha por roteiro: família, dias, noites, categoria, id do PDF (e preço, só p/ planilha)
+    roteiros.csv          uma linha por roteiro: família, dias, noites, categoria, pasta do roteiro no Drive (e preço, só p/ planilha)
     paradas.csv           uma linha por parada: roteiro; ordem; destino; noites; obs
     mapa_base.json        costa, divisas estaduais e siglas do mapa esquemático
   base.py                 leitura + regras de validação

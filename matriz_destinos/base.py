@@ -3,7 +3,8 @@
 Arquivos em dados/ (separador ;):
   familias.csv   ordem; familia; descricao
   destinos.csv   ordem; destino; regiao; lat; lon
-  roteiros.csv   roteiro; familia; dias; noites; categoria; arquivo_pdf; preco_vista_baixa; obs_preco
+  roteiros.csv   roteiro; familia; dias; noites; categoria; pasta_drive; arquivo_pdf; preco_vista_baixa; obs_preco
+                 (pasta_drive = id da pasta do roteiro no Drive, para onde o guia aponta)
                  (preços: base 2 pessoas, baixa temporada; usados só na planilha)
   paradas.csv    roteiro; ordem; destino; noites; obs   (uma linha por parada, na ordem do trajeto)
   mapa_base.json costa, divisas estaduais e siglas do mapa esquemático
@@ -34,7 +35,7 @@ def carregar():
         roteiros[l["roteiro"]] = {
             "roteiro": l["roteiro"], "familia": l["familia"], "dias": int(l["dias"]),
             "noites": int(l["noites"]), "categoria": l["categoria"].strip().upper(),
-            "pdf": l["arquivo_pdf"].strip(), "preco": l["preco_vista_baixa"].strip(),
+            "pasta": l["pasta_drive"].strip(), "pdf": l["arquivo_pdf"].strip(), "preco": l["preco_vista_baixa"].strip(),
             "obs_preco": l["obs_preco"].strip(), "trajeto": []}
     orfas = []
     for l in _csv("paradas.csv"):
@@ -71,6 +72,9 @@ def validar(b):
         erros.append("familias.csv: nome de família repetido")
     if len(dests) != len(b["destinos"]):
         erros.append("destinos.csv: destino repetido")
+    pastas = [r["pasta"] for r in b["roteiros"].values() if r["pasta"]]
+    for p in sorted({p for p in pastas if pastas.count(p) > 1}):
+        erros.append(f"roteiros.csv: a mesma pasta do Drive ({p}) está em mais de um roteiro")
     for nome in sorted(set(b["paradas_orfas"])):
         erros.append(f"paradas.csv: roteiro '{nome}' não existe em roteiros.csv")
     for nome, (lat, lon) in b["geo"].items():
@@ -81,8 +85,8 @@ def validar(b):
             erros.append(f"{nome}: família '{r['familia']}' não existe em familias.csv")
         if r["categoria"] not in {"LIGHT", "COMFORT", "STARS"}:
             erros.append(f"{nome}: categoria '{r['categoria']}' (use Light, Comfort ou Stars)")
-        if not r["pdf"]:
-            erros.append(f"{nome}: sem id do PDF no Drive")
+        if not r["pasta"]:
+            erros.append(f"{nome}: sem id da pasta do roteiro no Drive (pasta_drive)")
         if not r["trajeto"]:
             erros.append(f"{nome}: nenhuma parada em paradas.csv")
             continue

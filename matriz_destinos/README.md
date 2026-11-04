@@ -9,7 +9,7 @@ Tudo sai da pasta `dados/`. Para mudar um roteiro, um texto ou um destino, edite
 |---|---|---|
 | `familias.csv` | ordem; familia; descricao | A descrição é o texto que o consultor lê. A ordem define a ordem na página. |
 | `destinos.csv` | ordem; destino; regiao; lat; lon | Nome no formato `Cidade/UF`. Coordenadas aproximadas para o mapa. |
-| `roteiros.csv` | roteiro; familia; dias; noites; categoria; arquivo_pdf; preco_vista_baixa; obs_preco | Uma linha por roteiro. `arquivo_pdf` é o id do PDF no Drive. Preço (base 2 pessoas, baixa temporada) só aparece na planilha. |
+| `roteiros.csv` | roteiro; familia; dias; noites; categoria; pasta_drive; arquivo_pdf; preco_vista_baixa; obs_preco | Uma linha por roteiro. `pasta_drive` é o id da pasta do roteiro no Drive (o botão do guia abre essa pasta); `arquivo_pdf` é o PDF de 2 pessoas usado na extração. Preço (base 2 pessoas, baixa temporada) só aparece na planilha. |
 | `paradas.csv` | roteiro; ordem; destino; noites; obs | Uma linha por parada, na ordem do trajeto. |
 | `mapa_base.json` | costa, divisas, siglas | Contorno simplificado do mapa esquemático. |
 
@@ -28,7 +28,7 @@ Para o processo e mostra o problema quando:
 - a ordem das paradas não é 1, 2, 3…;
 - um destino não existe em `destinos.csv` (ou está sem coordenada válida);
 - uma família não existe em `familias.csv`, ou uma família/destino ficou sem uso;
-- um roteiro está sem categoria válida (Light, Comfort, Stars) ou sem id do PDF;
+- um roteiro está sem categoria válida (Light, Comfort, Stars) ou sem pasta do Drive, ou duas linhas apontam para a mesma pasta;
 - há parada de um roteiro que não existe em `roteiros.csv`.
 
 Os testes (`test_dados.py`) garantem que essas regras continuam funcionando:
@@ -36,7 +36,7 @@ Os testes (`test_dados.py`) garantem que essas regras continuam funcionando:
 
 ## Como incluir um roteiro novo
 
-1. Uma linha em `roteiros.csv` (família, dias, noites, categoria, id do PDF).
+1. Uma linha em `roteiros.csv` (família, dias, noites, categoria, id da pasta no Drive — o trecho final do link da pasta, depois de `/folders/`).
 2. Uma linha por parada em `paradas.csv`, na ordem do trajeto.
 3. Destino novo? Uma linha em `destinos.csv` com região e coordenadas.
 4. `python3 gerar.py` e, se a validação passar, commit.

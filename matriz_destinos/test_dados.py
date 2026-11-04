@@ -43,9 +43,13 @@ class TestDados(unittest.TestCase):
         def mudar(b): b["roteiros"]["Essencial"]["trajeto"][2]["ordem"] = 9
         self.assertTrue(any("ordem do trajeto" in e for e in self.erros_com(mudar)))
 
-    def test_pega_pdf_ausente(self):
-        def mudar(b): b["roteiros"]["Essencial"]["pdf"] = ""
-        self.assertTrue(any("PDF" in e for e in self.erros_com(mudar)))
+    def test_pega_pasta_ausente(self):
+        def mudar(b): b["roteiros"]["Essencial"]["pasta"] = ""
+        self.assertTrue(any("pasta" in e for e in self.erros_com(mudar)))
+
+    def test_pega_pasta_repetida(self):
+        def mudar(b): b["roteiros"]["Essencial Plus"]["pasta"] = b["roteiros"]["Essencial"]["pasta"]
+        self.assertTrue(any("mais de um roteiro" in e for e in self.erros_com(mudar)))
 
     def test_pega_parada_de_roteiro_inexistente(self):
         def mudar(b): b["paradas_orfas"].append("Roteiro Fantasma")

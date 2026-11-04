@@ -128,7 +128,7 @@ def main():
             ws.cell(row=6, column=c, value=d)
             c += 1
     ws.cell(row=6, column=col_traj, value="TRAJETO (noites)")
-    ws.cell(row=6, column=col_pdf, value="PDF")
+    ws.cell(row=6, column=col_pdf, value="PASTA")
     ws.cell(row=6, column=col_aux, value="AUX BUSCA")
     ws.merge_cells(start_row=5, start_column=col_traj, end_row=5, end_column=col_pdf)
     ws.cell(row=5, column=col_traj, value="DETALHES")
@@ -179,7 +179,7 @@ def main():
             for p in info["trajeto"])
         ws.cell(row=r, column=col_traj, value=traj)
         ws.cell(row=r, column=col_pdf,
-                value=f'=HYPERLINK("https://drive.google.com/file/d/{info["pdf"]}/view","abrir")')
+                value=f'=HYPERLINK("https://drive.google.com/drive/folders/{info["pasta"]}","abrir")')
         cond = []
         for k in (3, 4, 5):
             cond.append(f'OR(Busca!$C${k}="",COUNTIFS({rngA},$B{r},{rngF},Busca!$C${k})>0)')
@@ -233,7 +233,7 @@ def main():
     for j in range(col_dest0, col_traj):
         ws.column_dimensions[L(j)].width = 4.6
     ws.column_dimensions[L(col_traj)].width = 70
-    ws.column_dimensions[L(col_pdf)].width = 7
+    ws.column_dimensions[L(col_pdf)].width = 8
     ws.column_dimensions[L(col_aux)].width = 6
     ws.column_dimensions[L(col_aux)].hidden = True
     ws.freeze_panes = f"{L(col_dest0)}{PRIM}"
