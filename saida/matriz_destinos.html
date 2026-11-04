@@ -155,6 +155,31 @@ svg.map .lbl { font-family: var(--font-body); font-weight: 700; fill: var(--ink)
 svg.map .num { font-family: var(--font-body); font-weight: 800; fill: #fff; text-anchor: middle; dominant-baseline: central; }
 svg.map .dot2 { fill: var(--navy); opacity: .55; }
 
+/* Abas da família */
+.tabs { display: inline-flex; gap: 4px; background: var(--navy-soft); border-radius: 999px; padding: 4px; margin: 0 0 22px; }
+.tabs a { text-decoration: none; font-weight: 800; font-size: .92rem; color: var(--navy); padding: 8px 18px; border-radius: 999px; }
+.tabs a[aria-current="page"] { background: var(--navy); color: var(--on-navy); }
+
+/* Comparação dentro da família (estilo tabela de destinos por pacote) */
+.cmpfam { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 18px; }
+.cmpfam table { border-collapse: separate; border-spacing: 6px 5px; width: 100%; min-width: 560px; }
+.cmpfam thead th { position: static; border: 0; padding: 0; vertical-align: bottom; }
+.cmpfam .hd { display: block; border-radius: 10px; padding: 10px 8px; text-align: center; color: #fff; text-decoration: none; line-height: 1.2; min-width: 108px; }
+.cmpfam .hd b { display: block; font-size: .82rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.cmpfam .hd small { display: block; font-size: .7rem; font-weight: 700; opacity: .9; margin-top: 3px; text-transform: uppercase; letter-spacing: .03em; }
+.cmpfam tbody th { position: sticky; left: 0; z-index: 1; box-shadow: -10px 0 0 var(--surface), 0 -6px 0 var(--surface), 0 6px 0 var(--surface); background: var(--tint); border: 0; border-radius: 8px; padding: 9px 14px; text-align: left; font-weight: 800; font-size: .9rem; color: var(--ink); min-width: 170px; }
+.cmpfam tbody th small { display: block; font-weight: 600; color: var(--muted); font-size: .76rem; }
+.cmpfam tbody td { background: var(--tint); border: 0; border-radius: 8px; text-align: center; padding: 6px 4px; }
+.ic { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; vertical-align: middle; }
+.ic.sim { background: var(--green); color: #fff; }
+.ic.passa { background: transparent; color: var(--green-ink); box-shadow: inset 0 0 0 2px var(--green); }
+.ic.nao { background: #e2534a; color: #fff; }
+html.dark .ic.nao { background: #c9483f; }
+.ic svg { width: 15px; height: 15px; }
+.cmpfam .nt { display: block; font-size: .7rem; font-weight: 700; color: var(--muted); margin-top: 2px; }
+.cmplegend { display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--muted); font-size: .86rem; margin: 14px 4px 0; }
+.cmplegend > span { display: inline-flex; align-items: center; gap: 8px; }
+
 /* Comparar */
 .tablewrap { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: auto; max-height: 78vh; box-shadow: var(--shadow); }
 table { border-collapse: separate; border-spacing: 0; width: 100%; font-variant-numeric: tabular-nums; }
@@ -175,6 +200,7 @@ a:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid 
 .fade { animation: fade .25s ease-out; }
 @keyframes fade { from { opacity: .4; transform: translateY(4px); } to { opacity: 1; transform: none; } }
 @media (max-width: 820px) { .detail { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .cmpfam { padding: 10px; } .cmpfam tbody th { min-width: 118px; padding: 8px 10px; font-size: .82rem; } .cmpfam .hd { min-width: 96px; } }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
@@ -319,9 +345,44 @@ function home() {
     }).join("") + `</div>`;
 }
 
+const famTabs = (f, atual) => byFam[f].length < 2 ? "" :
+  `<nav class="tabs" aria-label="Visão da família"><a href="#f-${slug(f)}"${atual === "lista" ? ' aria-current="page"' : ""}>Roteiros</a>` +
+  `<a href="#c-${slug(f)}"${atual === "comparar" ? ' aria-current="page"' : ""}>Comparar destinos</a></nav>`;
+
 function family(f) {
   return `<nav class="crumbs"><a href="#inicio">Famílias</a> /</nav><h2>${esc(f)}</h2><p class="intro">${esc(SOBRE[f] || "")} Entre parênteses, os bate-voltas.</p>` +
-    `<div class="list">${byFam[f].map(r => rowHtml(r)).join("")}</div>`;
+    famTabs(f, "lista") + `<div class="list">${byFam[f].map(r => rowHtml(r)).join("")}</div>`;
+}
+
+/* Cores dos cabeçalhos: tons do azul e do verde Eco, alternados */
+const COR_COL = ["#2a3767", "#3a7d00", "#3f55a0", "#53af02", "#5868b0", "#2f6b00", "#1f2a52", "#6cbf1f"];
+const ICON_SIM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const ICON_NAO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg>';
+
+function compareFam(f) {
+  const rs = byFam[f];
+  const linhas = DEST.filter(d => rs.some(r => d in r.map));
+  const nota = d => { const o = rs.map(r => r.t.find(x => x[0] === d && x[2])).find(Boolean); return o ? o[2] : ""; };
+  let h = `<nav class="crumbs"><a href="#inicio">Famílias</a> / <a href="#f-${slug(f)}">${esc(f)}</a> /</nav>` +
+    `<h2>Comparar destinos: ${esc(f)}</h2><p class="intro">Quais destinos cada roteiro da família inclui. Clique no nome do roteiro para ver o trajeto completo.</p>` +
+    famTabs(f, "comparar") + `<div class="cmpfam"><table><thead><tr><th></th>`;
+  rs.forEach((r, i) => {
+    h += `<th><a class="hd" href="#r-${r.slug}" style="background:${COR_COL[i % COR_COL.length]}"><b>${esc(r.n.replace(/^Econômica /, ""))}</b><small>${r.d} dias e ${r.nt} noites</small></a></th>`;
+  });
+  h += `</tr></thead><tbody>`;
+  linhas.forEach(d => {
+    const [cid, uf] = d.split("/");
+    h += `<tr><th>${esc(cid)}/${esc(uf)}</th>` + rs.map(r => {
+      if (!(d in r.map)) return `<td><span class="ic nao" title="${esc(r.n)} não passa por ${esc(cid)}">${ICON_NAO}</span><span class="sr" hidden>Não</span></td>`;
+      const n = r.map[d];
+      return n ? `<td><span class="ic sim" title="${nt(n)}">${ICON_SIM}</span><span class="nt">${nt(n)}</span></td>`
+               : `<td><span class="ic passa" title="Passa sem dormir">${ICON_SIM}</span><span class="nt">sem pernoite</span></td>`;
+    }).join("") + `</tr>`;
+  });
+  h += `</tbody></table></div><div class="cmplegend"><span><span class="ic sim" style="width:20px;height:20px">${ICON_SIM}</span>inclui, com pernoite</span>` +
+    `<span><span class="ic passa" style="width:20px;height:20px">${ICON_SIM}</span>passa sem dormir (bate-volta, chegada ou saída)</span>` +
+    `<span><span class="ic nao" style="width:20px;height:20px">${ICON_NAO}</span>não inclui</span></div>`;
+  return h;
 }
 
 function roteiro(r) {
@@ -374,6 +435,7 @@ function route() {
   const q = $("q").value, hsh = location.hash.slice(1);
   let html, isHome = false;
   if (q.trim()) html = results(q);
+  else if (hsh.startsWith("c-")) { const f = D.familias.find(x => slug(x) === hsh.slice(2)); html = f && byFam[f] ? compareFam(f) : (isHome = true, home()); }
   else if (hsh.startsWith("f-")) { const f = D.familias.find(x => slug(x) === hsh.slice(2)); html = f && byFam[f] ? family(f) : (isHome = true, home()); }
   else if (hsh.startsWith("r-")) { const r = D.roteiros.find(x => x.slug === hsh.slice(2)); html = r ? roteiro(r) : (isHome = true, home()); }
   else if (hsh === "comparar") html = compare();
